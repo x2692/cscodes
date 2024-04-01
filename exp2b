@@ -1,0 +1,10 @@
+numCoins = 10;
+numTosses = 1000;
+numSum = randi([1,2],numTosses,numCoins);
+sumValues=sum(numSum,2);
+numOutcomes = numCoins*2;
+prob_dist = histcounts(sumValues,numCoins:numOutcomes+1)/numTosses;
+bar(numCoins:numOutcomes,prob_dist);
+title("Probability distribution of 100 coins");
+xlabel("Possible sum values");
+ylabel("Probability");
