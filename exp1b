@@ -1,0 +1,53 @@
+rng(42)
+N = 1000;
+M = 50;
+Rxav = zeros(1,M+1);
+Ryav = zeros(1,M+1);
+Sxav = zeros(1,M+1);
+Syav = zeros(1,M+1);
+
+for i = 1:10
+    X = rand(1,N) - (1/2);
+    Y(1) = 0;
+    for n = 2:N
+        Y(n) = 0.9*Y(n-1)+X(n);
+    end
+    Rx = R_Corr(X,M);
+    Ry = R_Corr(Y,M);
+    Sx = fftshift(abs(fft(Rx)));
+    Sy = fftshift(abs(fft(Ry)));
+    Rxav = Rxav + Rx;
+    Ryav = Ryav + Ry;
+    Sxav = Sxav + Sx;
+    Syav = Syav + Sy;
+end
+
+figure(1);
+subplot(2,2,1);
+plot(Rxav);
+title("Auto correlation of random process");
+
+subplot(2,2,2);
+plot(Ryav);
+title("Auto correlation of Output from low pass filter");
+
+subplot(2,2,3);
+plot(Sxav);
+title("power spectral density of random process");
+
+subplot(2,2,4);
+plot(Syav);
+title("Power spectral density of output from low pass filter");
+
+function [R] = R_Corr(X,M)
+N = length(X);
+R = zeros(1,M+1);
+
+for m = 1:M+1
+    for n = 1:N-m+1
+        R(m) = R(m)+X(n).*X(n+m-1);
+    end
+    R(m)=R(m)/(N-m+1) ;
+end
+end
+
