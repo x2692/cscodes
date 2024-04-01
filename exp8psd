@@ -1,0 +1,33 @@
+v=1;
+R=1;
+T=1/R;
+f = 0:0.001*R:2*R;
+f=f+1e-10;
+%unipolar nrz
+s = ((v.^2*T/4).*(sin(pi.*f*T)./(pi.*f*T)).^2);
+s(1)=s(1)+(v^2/4);
+ff=0;
+stem(ff,s(1),"*r","LineWidth",4);
+hold on;
+plot(f,s,"-r","LineWidth",2);
+hold on;
+
+%polar nrz
+s = ((v.^2*T).*(sin(pi.*f*T)./(pi.*f*T)).^2);
+plot(f,s,"--b","LineWidth",2);
+hold on;
+
+%bipolar rz (50%duty cycle)
+
+s=((v.^2*T/4).*((sin(pi.*f*T/2)./(pi.*f*T/2)).^2).*((sin(pi.*f*T)).^2));
+plot(f,s,"--k","LineWidth",2);
+hold on;
+
+%manchester
+s = ((v.^2*T).*((sin(pi.*f*T/2)./(pi.*f*T/2)).^2).*((sin(pi.*f*T/2)).^2));
+plot(f,s,"-g","LineWidth",2);
+hold on;
+
+legend("Unipolar NRZ at f=0","Unipolar NRZ","Polar NRZ","Bipolar RZ","Manchester");
+xlabel("Normalized frequency");
+ylabel("PSD");
