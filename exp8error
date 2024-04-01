@@ -1,0 +1,14 @@
+E=[0:1:25];
+
+p1 = (1/2)*erfc(sqrt(E/2));
+
+p2 = (1/2)*erfc(sqrt(E));
+
+p3 = (3/4)*erfc(sqrt(E/2));
+
+E=10*log10(E);
+
+semilogy(E,p1,"-b",E,p2,"-r",E,p3,"-k","LineWidth",2);
+legend("Unipolar","Manchester/Polar","Bipolar");
+xlabel("SNR per bit");
+ylabel("Error probabilty per bit");
