@@ -1,0 +1,35 @@
+th = 0:2*pi/50:2*pi;
+A = 1 ;
+sig = A*sin(th);
+delta = [0.2,0.3,0.4];
+bitstream = zeros(1,length(th));
+dm = zeros([3,length(th)]);
+vth = 0;
+for d = 1:length(delta)
+    for i = 1:length(th)
+        if(sig(i)>vth)
+            bitstream = 1;
+            vth = vth+delta(d);
+        else
+            bitstream =0;
+            vth = vth-delta(d);
+        end
+        dm(d,i)=vth;
+    end
+end
+subplot(3,1,1)
+hold on
+plot(sig);
+stairs(dm(1,:));
+hold off
+subplot(3,1,2)
+hold on
+plot(sig);
+stairs(dm(2,:));
+hold off
+subplot(3,1,3)
+hold on
+plot(sig);
+stairs(dm(3,:));
+hold off
+
