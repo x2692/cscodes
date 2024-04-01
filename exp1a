@@ -1,0 +1,40 @@
+rng(42);
+
+s_l=1000;
+s_1=randn(1,s_l);
+s_2=randn(1,s_l);
+
+autoCorr_result1 = xcorr(s_1,s_1);
+autoCorr_result2 = xcorr(s_2,s_2);
+
+lags=-(s_l-1):(s_l-1);
+
+figure;
+plot(lags,autoCorr_result1);
+title("Auto_correlation of random signal 1");
+xlabel("lags");
+ylabel("auto_correlation");
+grid on;
+
+figure;
+plot(lags,autoCorr_result2);
+title("Auto_correlation of random signal 2");
+xlabel("lags");
+ylabel("auto_correlation");
+grid on;
+
+[psd,frequencies] = pwelch(s_1,[],[],[],1);
+figure;
+semilogy(frequencies,psd);
+title("PSD of random signal 1");
+xlabel("Frequency");
+ylabel("Power/frequency (DB/Hz)");
+grid on;
+
+[psd,frequencies] = pwelch(s_2,[],[],[],1);
+figure;
+semilogy(frequencies,psd);
+title("PSD of random signal 2");
+xlabel("Frequency");
+ylabel("Power/frequency (DB/Hz)");
+grid on;
