@@ -1,0 +1,10 @@
+numDice = 2;
+numRolls = 1000;
+diceSum = randi([1,6] , numRolls , numDice);
+sumValues = sum(diceSum,2);
+numOutcomes = numDice*6;
+prob_dist = histcounts(sumValues,numDice:numOutcomes+1)/numRolls;
+bar(numDice:numOutcomes , prob_dist);
+title("Probabilty distribution of 10 dices");
+xlabel("Possible sum values");
+ylabel("probabilty");
