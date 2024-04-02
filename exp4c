@@ -1,0 +1,60 @@
+
+
+clear;
+
+fsin = 0.98e6;            
+fc = 1e6;                 
+delta_f = 80e3;           
+fnoise = 3e6;            
+                     
+fs = 450e3;               
+
+
+fmin = fc - delta_f/2;    
+fmax = fc + delta_f/2;    
+
+nord = 8;
+dp = 1;                   
+ds = 30;                  
+
+[b,a] = ellip(nord, 1, ds,[fmin, fmax]*2*pi,'s');   
+
+[H,w] = freqs(b,a);
+figure(1),     clf;
+plot(w/(2*pi), 20*log10(abs(H)),'k-','LineWidth',1);
+title('Amplitudengang des Analogfilters');
+xlabel('Hz');    ylabel('dB');     grid on;
+axis tight;
+
+
+Tfinal = 0.05;
+sim('subsampling3',[0,Tfinal]);
+ys = y.Data;
+t = y.Time;
+ys1 = y1.Data;
+t1 = y1.Time;
+
+figure(2),    clf;
+stairs(t, ys,'k-','LineWidth',1);
+title('Signal after the ''Upsample'' block with facto 10 (excerpt)');
+xlabel('s');     grid on;
+La = axis;   axis([0.026, 0.02605, La(3:4)]);
+
+
+[Pyy,F] = pwelch(ys,hann(4096),[256],4096,fs*10);
+
+figure(3),    clf;
+plot(F, 10*log10(Pyy),'k-','LineWidth',1);
+title(['Power spectral density of the subsampled signal'...
+    ' over several periods']);
+ylabel('dBW/Hz');      grid on;
+xlabel(['Frequency in Hz (fs = ',num2str(fs),' Hz)']);   
+La = axis;    axis([0, max(F), La(3:4)]);
+
+figure(4),    clf;
+stairs(t1, y1.Data,'k-','LineWidth',1);
+La = axis;   axis([0.026, 0.02605, La(3:4)]);
+title('Bandpass signal and reconstructed bandpass signal (excerpt)');
+xlabel('s');   grid on;
+
+
